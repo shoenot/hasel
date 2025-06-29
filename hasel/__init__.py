@@ -17,9 +17,9 @@ def rgb2hsl(rgb):
         ltop = (iadd != 510) * (iadd > 255)
         lbot = (iadd != 0) * (ltop == False)
 
-        l[:] = iadd.astype(np.float) / 510
+        l[:] = iadd.astype(float) / 510
 
-        fsub = isub.astype(np.float)
+        fsub = isub.astype(float)
         s[ltop] = fsub[ltop] / (510 - iadd[ltop])
         s[lbot] = fsub[lbot] / iadd[lbot]
 
@@ -35,7 +35,7 @@ def rgb2hsl(rgb):
         h[h < 0] += 6
         h[:] /= 6
 
-    hsl = np.zeros(rgb.shape, dtype=np.float)
+    hsl = np.zeros(rgb.shape, dtype=float)
     cpus = multiprocessing.cpu_count()
     length = int(math.ceil(float(hsl.shape[0]) / cpus))
     line = 0
@@ -59,7 +59,7 @@ def hsl2rgb(hsl):
         h, s, l = _hsl[:, :, 0], _hsl[:, :, 1], _hsl[:, :, 2]
         fr, fg, fb = _frgb[:, :, 0], _frgb[:, :, 1], _frgb[:, :, 2]
 
-        q = np.zeros(l.shape, dtype=np.float)
+        q = np.zeros(l.shape, dtype=float)
 
         lbot = l < 0.5
         q[lbot] = l[lbot] * (1 + s[lbot])
@@ -96,7 +96,7 @@ def hsl2rgb(hsl):
         calc_channel(fg, h.copy())
         calc_channel(fb, h - per_3)
 
-    frgb = np.zeros(hsl.shape, dtype=np.float)
+    frgb = np.zeros(hsl.shape, dtype=float)
     cpus = multiprocessing.cpu_count()
     length = int(math.ceil(float(hsl.shape[0]) / cpus))
     line = 0
